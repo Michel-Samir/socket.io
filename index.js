@@ -1,20 +1,19 @@
-const app = require("express")();
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
+const webSocket = require("ws");
 
 const port = process.env.PORT || 4000;
 const host = "0.0.0.0";
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+
+const wss = new webSocket.Server({ host: host, port }, () => {
+  console.log("Server Started");
 });
 
-io.on("connection", (socket) => {
-  console.log("A user connected");
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
+wss.on("connection", (ws) => {
+  ws.on("message", (data) => {
+    console.log(`Data received ${data}`);
+    ws.send(data);
   });
 });
 
-http.listen(port, host, () => {
-  console.log(`listening on port ${host}:${port}`);
+wss.on("listening", () => {
+  console.log(`Server is listening on ${host}:${port}`);
 });
