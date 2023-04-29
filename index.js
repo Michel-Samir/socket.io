@@ -10,7 +10,7 @@ const wss = new webSocket.Server({ host: host, port }, () => {
 wss.on("connection", (ws) => {
   ws.on("message", (data) => {
     console.log(`Data received ${data}`);
-    ws.send(data);
+    ws.send(`Data Storied on server: ${data}`);
   });
 });
 
