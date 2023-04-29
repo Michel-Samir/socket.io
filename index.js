@@ -1,18 +1,20 @@
-const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const app = require("express")();
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
 
-app.get("/", (req, res)=>{
-    res.sendFile(__dirname + '/index.html');
+const port = process.env.PORT || 4000;
+const host = process.env.HOST || "localhost";
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
 });
 
-io.on('connection', (socket)=> {
-    console.log('A user connected');
-    socket.on('disconnect', ()=> {
-        console.log('A user disconnected')
-    });
+io.on("connection", (socket) => {
+  console.log("A user connected");
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
 });
 
-http.listen(4000, "localhost", ()=> {
-    console.log("listening on port 4000");
+http.listen(port, host, () => {
+  console.log("listening on port 4000");
 });
